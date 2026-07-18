@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebMirror</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="header">
+        <div>
+          <h1>WebMirror</h1>
+          <p id="page-label">Checking the active page...</p>
+        </div>
+        <span id="status-badge" class="status-badge">Idle</span>
+      </header>
+
+      <section class="summary" aria-live="polite">
+        <dl>
+          <div>
+            <dt>Origin</dt>
+            <dd id="origin-value">-</dd>
+          </div>
+          <div>
+            <dt>Helper</dt>
+            <dd id="helper-value">Not checked</dd>
+          </div>
+        </dl>
+      </section>
+
+      <button id="mirror-button" type="button" disabled>Mirror this page</button>
+      <p class="privacy-note">
+        Authorized pages only. Cookies, passwords, tokens, and form values are excluded.
+      </p>
+    </main>
+    <script type="module" src="/src/popup.ts"></script>
+  </body>
+</html>

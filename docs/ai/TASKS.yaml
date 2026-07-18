@@ -1,0 +1,158 @@
+version: 1
+active_phase: S1
+tasks:
+  - id: AI-S0-001
+    phase: S0
+    status: done
+    title: Initialize Git
+    depends_on: []
+    human_gate: false
+  - id: AI-S0-002
+    phase: S0
+    status: done
+    title: Create AGENTS.md
+    depends_on:
+      - AI-S0-001
+    human_gate: false
+  - id: AI-S0-003
+    phase: S0
+    status: done
+    title: Create AI state file
+    depends_on:
+      - AI-S0-002
+    human_gate: false
+  - id: AI-S0-004
+    phase: S0
+    status: done
+    title: Create task queue
+    depends_on:
+      - AI-S0-003
+    human_gate: false
+  - id: AI-S0-005
+    phase: S0
+    status: done
+    title: Establish commands and quality gates
+    depends_on:
+      - AI-S0-004
+    human_gate: false
+  - id: AI-S0-006
+    phase: S0
+    status: done
+    title: Initialize monorepo packages
+    depends_on:
+      - AI-S0-005
+    human_gate: false
+  - id: AI-S0-007
+    phase: S0
+    status: done
+    title: Configure TypeScript linting and tests
+    depends_on:
+      - AI-S0-006
+    human_gate: false
+  - id: AI-S0-008
+    phase: S0
+    status: done
+    title: Establish repository health check
+    depends_on:
+      - AI-S0-007
+    human_gate: false
+  - id: AI-S0-009
+    phase: S0
+    status: done
+    title: Create fixture server
+    depends_on:
+      - AI-S0-008
+    human_gate: false
+  - id: AI-S0-010
+    phase: S0
+    status: done
+    title: Create ADR risk and metrics templates
+    depends_on:
+      - AI-S0-009
+    human_gate: false
+  - id: AI-S1-001
+    phase: S1
+    status: in_progress
+    title: Create minimum MV3 capture controller
+    depends_on:
+      - AI-S0-010
+    human_gate: false
+  - id: AI-S1-002
+    phase: S1
+    status: pending
+    title: Attach debugger to the active tab
+    depends_on:
+      - AI-S1-001
+    human_gate: false
+  - id: AI-S1-003
+    phase: S1
+    status: pending
+    title: Record Page domain events
+    depends_on:
+      - AI-S1-002
+    human_gate: false
+  - id: AI-S1-004
+    phase: S1
+    status: pending
+    title: Record Network domain events
+    depends_on:
+      - AI-S1-002
+    human_gate: false
+  - id: AI-S1-005
+    phase: S1
+    status: pending
+    title: Handle redirects failures and cache hits
+    depends_on:
+      - AI-S1-004
+    human_gate: false
+  - id: AI-S1-006
+    phase: S1
+    status: pending
+    title: Implement the local helper runtime
+    depends_on:
+      - AI-S1-001
+    human_gate: false
+  - id: AI-S1-007
+    phase: S1
+    status: pending
+    title: Connect Native Messaging
+    depends_on:
+      - AI-S1-006
+    human_gate: false
+  - id: AI-S1-008
+    phase: S1
+    status: pending
+    title: Send capture manifests to the helper
+    depends_on:
+      - AI-S1-004
+      - AI-S1-007
+    human_gate: false
+  - id: AI-S1-009
+    phase: S1
+    status: pending
+    title: Download public static resources
+    depends_on:
+      - AI-S1-008
+    human_gate: false
+  - id: AI-S1-010
+    phase: S1
+    status: pending
+    title: Start the local preview server
+    depends_on:
+      - AI-S1-006
+    human_gate: false
+  - id: AI-S1-011
+    phase: S1
+    status: pending
+    title: Replay the basic fixture offline
+    depends_on:
+      - AI-S1-009
+      - AI-S1-010
+    human_gate: false
+  - id: AI-S1-012
+    phase: S1
+    status: pending
+    title: Replay the WebGL benchmark first scene
+    depends_on:
+      - AI-S1-011
+    human_gate: false

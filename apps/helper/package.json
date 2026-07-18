@@ -1,0 +1,17 @@
+{
+  "name": "@webmirror/helper",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "webmirror-helper": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --platform node",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@webmirror/shared": "workspace:*"
+  }
+}

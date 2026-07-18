@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "paths": {
+      "@webmirror/shared": ["./packages/shared/src/index.ts"],
+      "@webmirror/capture": ["./packages/capture/src/index.ts"],
+      "@webmirror/mirror": ["./packages/mirror/src/index.ts"],
+      "@webmirror/validation": ["./packages/validation/src/index.ts"]
+    }
+  }
+}

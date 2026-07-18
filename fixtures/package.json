@@ -1,0 +1,11 @@
+{
+  "name": "@webmirror/fixtures",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/server.ts --format esm --platform node",
+    "dev": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit"
+  }
+}

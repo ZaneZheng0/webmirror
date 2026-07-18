@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "WebMirror",
+  "description": "Create an authorized offline mirror of the active static web page.",
+  "version": "0.0.1",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": ["activeTab", "debugger", "nativeMessaging", "storage"]
+}
