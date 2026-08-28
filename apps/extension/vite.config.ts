@@ -6,6 +6,12 @@ import { defineConfig } from 'vite';
 const directory = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@webmirror/capture': resolve(directory, '../../packages/capture/src/index.ts'),
+      '@webmirror/shared': resolve(directory, '../../packages/shared/src/index.ts'),
+    },
+  },
   build: {
     emptyOutDir: true,
     rollupOptions: {

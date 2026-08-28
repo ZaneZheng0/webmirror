@@ -12,9 +12,16 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm",
+    "test": "vitest run --root ../.. packages/validation/src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@webmirror/shared": "workspace:*"
+    "@webmirror/shared": "workspace:*",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.61.1",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/pngjs": "^6.0.5"
   }
 }

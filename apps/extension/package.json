@@ -1,6 +1,6 @@
 {
   "name": "@webmirror/extension",
-  "version": "0.0.1",
+  "version": "0.0.60",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@webmirror/capture": "workspace:*",
-    "@webmirror/shared": "workspace:*"
+    "@webmirror/shared": "workspace:*",
+    "lucide": "^1.24.0"
   }
 }

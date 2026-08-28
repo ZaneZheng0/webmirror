@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 15000,
+  "loopbackSettleMs": 15000,
+  "actionSettleMs": 3000,
+  "actions": [
+    {
+      "id": "orbit-model",
+      "type": "drag",
+      "from": {
+        "x": 640,
+        "y": 360
+      },
+      "to": {
+        "x": 820,
+        "y": 360
+      },
+      "steps": 30,
+      "settleMs": 3000,
+      "expectSelector": "canvas"
+    }
+  ]
+}

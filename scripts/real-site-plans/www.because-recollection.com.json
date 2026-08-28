@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 10000,
+  "loopbackSettleMs": 15000,
+  "actionSettleMs": 3000,
+  "actions": [
+    {
+      "id": "launch-first-artist",
+      "type": "click",
+      "selector": ".spacebar__button:not(.spacebar__button--simple)",
+      "holdMs": 5000,
+      "settleMs": 12000,
+      "expectSelector": ".wrapper--experience.is-active"
+    },
+    {
+      "id": "switch-second-artist",
+      "type": "click",
+      "selector": ".spacebar__button:not(.spacebar__button--simple)",
+      "holdMs": 5000,
+      "settleMs": 12000,
+      "expectSelector": ".wrapper--experience.is-active"
+    }
+  ]
+}

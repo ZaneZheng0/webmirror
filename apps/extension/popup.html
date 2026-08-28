@@ -12,10 +12,10 @@
           <h1>WebMirror</h1>
           <p id="page-label">Checking the active page...</p>
         </div>
-        <span id="status-badge" class="status-badge">Idle</span>
+        <span id="status-badge" class="status-badge" data-tone="neutral">Idle</span>
       </header>
 
-      <section class="summary" aria-live="polite">
+      <section class="target-summary" aria-live="polite">
         <dl>
           <div>
             <dt>Origin</dt>
@@ -23,12 +23,109 @@
           </div>
           <div>
             <dt>Helper</dt>
-            <dd id="helper-value">Not checked</dd>
+            <dd id="helper-value">Checking...</dd>
           </div>
         </dl>
       </section>
 
-      <button id="mirror-button" type="button" disabled>Mirror this page</button>
+      <section id="start-panel" class="start-panel">
+        <button id="mirror-button" class="primary-button" type="button" disabled>
+          <i data-lucide="copy-plus" aria-hidden="true"></i>
+          <span>Mirror this page</span>
+        </button>
+      </section>
+
+      <section id="job-panel" class="job-panel" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Current stage</p>
+            <h2 id="job-message">Preparing the mirror.</h2>
+          </div>
+          <span id="elapsed-value" class="elapsed-value">0:00</span>
+        </div>
+
+        <ol id="stage-list" class="stage-list" aria-label="Mirror progress">
+          <li data-stage="preflight"><span></span>Check</li>
+          <li data-stage="attaching"><span></span>Attach</li>
+          <li data-stage="discovering"><span></span>Discover</li>
+          <li data-stage="downloading"><span></span>Download</li>
+          <li data-stage="localizing"><span></span>Localize</li>
+          <li data-stage="fast_validating"><span></span>Validate</li>
+          <li data-stage="ready"><span></span>Ready</li>
+        </ol>
+
+        <dl class="metrics">
+          <div>
+            <dt>Found</dt>
+            <dd id="found-value">0</dd>
+          </div>
+          <div>
+            <dt>Done</dt>
+            <dd id="completed-value">0</dd>
+          </div>
+          <div>
+            <dt>Saved</dt>
+            <dd id="bytes-value">0 B</dd>
+          </div>
+          <div>
+            <dt>Warnings</dt>
+            <dd id="warnings-value">0</dd>
+          </div>
+        </dl>
+
+        <button id="cancel-button" class="secondary-button danger-button" type="button">
+          <i data-lucide="x" aria-hidden="true"></i>
+          <span>Cancel</span>
+        </button>
+      </section>
+
+      <section id="result-panel" class="result-panel" hidden>
+        <div class="result-heading">
+          <div class="result-icon" id="result-icon">
+            <i data-lucide="check" aria-hidden="true"></i>
+          </div>
+          <div>
+            <p class="section-label">Result</p>
+            <h2 id="result-title">Mirror complete</h2>
+            <p id="result-summary">The local mirror is ready.</p>
+          </div>
+          <strong id="score-value" class="score-value" hidden>100</strong>
+        </div>
+
+        <div class="result-actions">
+          <button id="open-preview-button" class="primary-button" type="button">
+            <i data-lucide="external-link" aria-hidden="true"></i>
+            <span>Open mirror</span>
+          </button>
+          <button id="open-folder-button" class="secondary-button" type="button">
+            <i data-lucide="folder-open" aria-hidden="true"></i>
+            <span>Open folder</span>
+          </button>
+          <button id="export-zip-button" class="secondary-button" type="button">
+            <i data-lucide="archive" aria-hidden="true"></i>
+            <span>Export ZIP</span>
+          </button>
+          <button id="open-report-button" class="secondary-button" type="button" hidden>
+            <i data-lucide="file-check" aria-hidden="true"></i>
+            <span>View report</span>
+          </button>
+          <button id="retry-button" class="secondary-button" type="button" hidden>
+            <i data-lucide="download" aria-hidden="true"></i>
+            <span>Retry failed</span>
+          </button>
+          <button id="revalidate-button" class="secondary-button" type="button">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            <span>Revalidate</span>
+          </button>
+        </div>
+
+        <button id="new-job-button" class="text-button" type="button">
+          <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+          <span>Mirror current page again</span>
+        </button>
+      </section>
+
+      <p id="notice" class="notice" role="status" hidden></p>
       <p class="privacy-note">
         Authorized pages only. Cookies, passwords, tokens, and form values are excluded.
       </p>

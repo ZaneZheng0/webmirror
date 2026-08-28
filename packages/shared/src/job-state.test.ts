@@ -15,4 +15,14 @@ describe('job state transitions', () => {
       'Invalid job state transition: failed -> preflight',
     );
   });
+
+  it('allows retry and revalidation from result states', () => {
+    expect(canTransition('complete', 'fast_validating')).toBe(true);
+    expect(canTransition('partial', 'downloading')).toBe(true);
+  });
+
+  it('allows a committed result to win a late cancellation race', () => {
+    expect(canTransition('cancelling', 'partial')).toBe(true);
+    expect(canTransition('cancelling', 'complete')).toBe(true);
+  });
 });

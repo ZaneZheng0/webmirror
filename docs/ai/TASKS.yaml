@@ -1,158 +1,358 @@
-version: 1
-active_phase: S1
+version: 2
+active_phase: release_handoff
 tasks:
-  - id: AI-S0-001
-    phase: S0
+  - id: BUG-009
+    phase: regression_hardening
     status: done
-    title: Initialize Git
-    depends_on: []
+    title: Reject invalid fallback assets and eliminate public-config secret false positives
+    objective: Audit the latest real user one-click outputs, then fix generic cases where SPA fallback HTML is accepted as a non-document asset or public static configuration is quarantined as a credential, without weakening privacy controls or adding source-domain branches.
+    scope:
+      - apps/extension
+      - apps/helper
+      - packages/capture
+      - packages/mirror
+      - packages/validation
+      - fixtures
+      - scripts
+      - tests
+      - docs/ai
+    acceptance:
+      - A response whose body and declared MIME are incompatible with a required script, style, JSON, WASM, model, binary, image, font, audio, or video resource is not committed as a successful mirror asset.
+      - Generic fallback detection can retry or retain a valid captured alternative without replacing required resources with an HTML application shell.
+      - Public storefront configuration and public client identifiers do not quarantine the entry document or ordinary static JavaScript, while private keys, authorization credentials, passwords, JWTs, and provider secrets remain blocking.
+      - The manual one-click root flows represented by the latest Active Theory, KodeKlubs, MANA yerba mate, and Don't Board Me artifacts are covered by focused regressions or rerun evidence.
+      - Scripted regression and manual one-click validation use equivalent clean-browser and entry-state assumptions, or report the remaining difference explicitly.
+      - No source-domain branch is added and all existing serial real-site regressions remain green.
+    verify:
+      - focused downloader, engine, secret-scan, and validation tests
+      - pnpm typecheck
+      - pnpm lint
+      - relevant Playwright end-to-end tests
+      - pnpm verify
+      - pnpm test:e2e
+      - serial installed-extension real-site regressions
+      - pnpm package:release
+    evidence:
+      - 'Latest manual Active Theory root output contains 131 non-document URLs saved with `text/html` bodies and fails validation with local HTTP failures plus blocking runtime errors.'
+      - 'Latest manual KodeKlubs root output contains 150 non-document URLs saved with `text/html` bodies and fails with blocked runtime dependencies.'
+      - 'Latest MANA yerba mate output quarantines 66 public HTML/JavaScript resources as `structured_credential`, including the entry document, and never reaches validation.'
+      - "Latest Don't Board Me output is a clean partial baseline with zero local failures, runtime errors, or replay remote requests."
+      - 'Generic body-integrity checks now reject MIME/body mismatches for executable, structured, binary, image, font, audio, video, model, and WASM resources; valid captured alternatives can still be retained.'
+      - 'Public storefront configuration and public client identifiers no longer trigger credential quarantine, while private keys, authorization credentials, passwords, JWTs, and provider secrets remain blocking.'
+      - 'Interactive captures retain a 20-second minimum discovery window and require both a refreshed root Document request and a post-reload page-ready event before idle completion; the stale-load regression is covered in `apps/extension/src/capture-controller.test.ts`.'
+      - 'Equal-content timestamped runtime aliases merge only when every candidate has the same SHA-256; ambiguous or different content remains unmapped.'
+      - 'Deep activity pages traverse only the active route subtree, and source navigation retries only bounded transient Chromium failures.'
+      - 'Implicit same-origin `/favicon.ico` requests initiated by the browser are filtered without suppressing explicitly linked or parameterized icons.'
+      - 'Native Host command probes isolate `NO_COLOR`/`FORCE_COLOR` so warnings cannot contaminate machine-readable version checks; `scripts/windows/common.test.mjs` and installed-host E2E cover the behavior.'
+      - 'Installed Helper `0.0.60` passed Shopify at `.codex-runtime/real-site-regressions/www-shopify-com-1786869703983/result.json`: `partial / 99`, 884/895 resources, all eight scroll actions passed, and zero local failures, remote requests, blocking errors, or action failures.'
+      - 'Installed Helper `0.0.60` passed MakeMePulse at `.codex-runtime/real-site-regressions/2019-makemepulse-com-1786871456388/result.json`: `partial / 99`, 211/212 resources, all five interactions passed, and zero local failures, remote requests, blocking errors, or action failures.'
+      - 'Installed Helper `0.0.60` passed Because Recollection at `.codex-runtime/real-site-regressions/www-because-recollection-com-1786871696186/result.json`: `partial / 99`, 586/631 resources, reached `/laurent-garnier`, and recorded zero local failures, remote requests, blocking errors, or action failures.'
+      - 'Installed Helper `0.0.60` passed Active Theory Work at `.codex-runtime/real-site-regressions/activetheory-net-1786872287610/result.json`: `partial / 99`, 826/982 resources, reached `/work/racer`, and recorded zero local failures, remote requests, blocking errors, or action failures.'
+      - 'KodeClubs and MANA controls passed at `.codex-runtime/real-site-regressions/www-kodeclubs-com-1786864237923/result.json` and `.codex-runtime/real-site-regressions/en-manayerbamate-com-1786860070403/result.json` with zero local failures, remote requests, blocking errors, or action failures.'
+      - '`pnpm verify` passed 493 tests across 33 files; `pnpm test:e2e` passed all 11 scenarios; `pnpm package:release` completed for `0.0.60`.'
+      - 'The packaged and installed Helper SHA-256 values match `8d9965216819c8b087a1d2d9fe42636b668f6030f685c35649ac831c66a5eff7`; Chrome and Edge Registry32/Registry64 protocol-2 handshakes return version `0.0.60`.'
+      - 'Release SHA-256 values: extension ZIP `6a66b510e4873d8f8911be402922ce620cb19fa91e82b677da9ac686d5577c24`, Native Host ZIP `58a5549fef022cf9d330f6cad7ae6aba4d67f51b9f1d8a88527ea2f57b415185`, SPDX SBOM `d792ddf158c7eabb6d5f23af926f20c8aa2e3b9fba9d6ea4cbfe88d632473ee9`.'
     human_gate: false
-  - id: AI-S0-002
-    phase: S0
+  - id: BUG-008
+    phase: regression_hardening
     status: done
-    title: Create AGENTS.md
-    depends_on:
-      - AI-S0-001
+    title: Verify and harden generic offline replay for new interactive static sites
+    objective: Run the installed one-click capture and offline replay flow for KodeKlubs and Active Theory Work, then fix any reusable capture, discovery, localization, or replay defect exposed by either site without source-domain branches.
+    scope:
+      - apps/extension
+      - apps/helper
+      - packages/capture
+      - packages/mirror
+      - packages/validation
+      - fixtures
+      - scripts
+      - tests
+      - docs/ai
+    acceptance:
+      - https://www.kodeclubs.com/ reaches its initial interactive experience offline with no unexpected remote requests, local HTTP failures, blocking runtime errors, or action failures.
+      - https://activetheory.net/work reaches its work listing and representative later work state offline with no unexpected remote requests, local HTTP failures, blocking runtime errors, or action failures.
+      - Any code change is based on a general resource-capture, dependency-discovery, URL-localization, or replay invariant and contains no source-domain branch.
+      - A minimal regression fixture or focused automated test covers every newly fixed failure class.
+      - Existing serial real-site regressions and repository quality gates remain green.
+    verify:
+      - installed extension and Native Host regressions for KodeKlubs and Active Theory Work
+      - source-versus-loopback browser diagnostics and interaction screenshots
+      - focused fixture and unit regressions for every discovered failure class
+      - pnpm typecheck
+      - pnpm lint
+      - relevant Playwright end-to-end tests
+      - pnpm verify
+      - pnpm test:e2e
+      - pnpm package:release
+    evidence:
+      - 'Generic validation and real-site replay handling now recognizes only known browser-generated media playback cancellations caused by pause, replacement load, or media removal; candidates become warnings only after every local resource, remote-request, screenshot, Canvas, diagnostic, and configured-action check passes.'
+      - 'Arbitrary runtime errors remain blocking. The earlier Active Theory `_this.initSync is not a function` event was not whitelisted and did not reproduce on the source page, four controlled stressed replays, or two later complete captures.'
+      - '`scripts/real-site-plan.test.mjs` and `packages/validation/src/runner.test.ts` cover accepted media cancellation signatures, rejection of unrelated failures, strict downgrade preconditions, and blocking behavior when another replay check fails.'
+      - 'BUG-008 focused tests passed 48/48.'
+      - 'Installed Helper `0.0.40` passed KodeKlubs at `.codex-runtime/real-site-regressions/www-kodeclubs-com-1784771292019/result.json`: `partial / 99`, 366/380 resources, both planned actions passed, and zero local failures, remote requests, blocking errors, or action failures; one browser media cancellation remains visible as a warning.'
+      - 'Installed Helper `0.0.40` passed Active Theory Work at `.codex-runtime/real-site-regressions/activetheory-net-1784771624946/result.json`: `partial / 99`, 757/873 resources, reached `/work/frontier-within`, and recorded zero local failures, remote requests, page errors, blocking errors, or action failures.'
+      - '`pnpm verify` passed 372 tests across 30 files; `pnpm test:e2e` passed all 11 scenarios; `pnpm package:release` completed.'
+      - 'The packaged and installed Helper SHA-256 values match `5914ea20299a1450ccd33fb161807901f8c8c37bc1188e87f8786adc38947848`; Chrome and Edge Registry32/Registry64 protocol-2 handshakes return version `0.0.40`.'
+      - 'Release SHA-256 values: extension ZIP `9aea6ad1515fb0a94bb1780eca6ab65dae93d206f8e47cdaa0f9fa5ede9c77a6`, Native Host ZIP `cc576387069a76bbf2f2f3fee55fb3bd7c81e02cee4b3ffa90991604080f3bd7`, SPDX SBOM `81c3de324329c7d689c3919c1e94a1212be610204ef1750061722df96c92ce41`.'
     human_gate: false
-  - id: AI-S0-003
-    phase: S0
+  - id: BUG-007
+    phase: regression_hardening
     status: done
-    title: Create AI state file
-    depends_on:
-      - AI-S0-002
+    title: Localize runtime-composed WebGL resource URLs without site-specific rules
+    objective: Fix the generic capture and replay gap that leaves newly mirrored WebGL pages requesting source assets after the entry runtime has loaded.
+    scope:
+      - apps/extension
+      - packages/capture
+      - packages/mirror
+      - packages/validation
+      - fixtures
+      - scripts
+      - docs/ai
+    acceptance:
+      - Corn Revolution progresses beyond its loading screen through the installed extension one-click flow.
+      - Required runtime-composed image, binary, JSON, model, shader, and texture URLs resolve locally with no unexpected remote requests or blocking runtime errors.
+      - The implementation is based on captured resource relationships or provable URL construction and does not branch on the source domain.
+      - Missing analytics or unavailable nonessential resources do not block the static experience.
+      - Existing Because Recollection, MakeMePulse, Landon Norris, and Shopify interaction regressions remain green.
+      - A previously unused authorized static/WebGL page passes as a blind regression after the fix.
+    verify:
+      - user report and mirror artifact diagnostics
+      - minimal fixture regression for runtime-composed URLs
+      - targeted capture, discovery, localization, and replay tests
+      - installed extension Corn Revolution regression
+      - existing four-site serial regressions
+      - one blind real-site regression
+      - pnpm verify
+      - pnpm test:e2e
+    evidence:
+      - 'User mirror `C:\Users\zzp\Documents\WebMirror\cornrevolution.resn.global-20260722T075145Z-df719114-35a` stalled at 41% with 57 unexpected remote requests, 64 blocking console errors, and 1 page error despite 96/98 manifest resources downloading.'
+      - 'A second user mirror at `C:\Users\zzp\Documents\WebMirror\cornrevolution.resn.global-20260722T071830Z-48f77e94-ec3` reproduced the same failure class.'
+      - 'Generic runtime-composed manifest leaves now remain source-relative when a provable runtime URL expression consumes them; the page-level URL mapper localizes the final URL instead of producing `CDN base + /_external/...`.'
+      - 'Validation diagnostic fingerprints are no longer copied into `mirror.json` as online dependencies; the validation report retains the blocked-request evidence separately.'
+      - '`packages/mirror/src/rewriter.test.ts` and `apps/helper/src/mirror-service.test.ts` passed 106 targeted tests, including dynamic image renditions and inline CSS custom-property URLs.'
+      - 'Installed Helper `0.0.32` passed Corn Revolution at `.codex-runtime/real-site-regressions/cornrevolution-resn-global-1784753659263/result.json`: complete/100, 94/94 resources, nonblank Canvas, zero local failures, remote requests, blocking errors, and action failures.'
+      - 'Installed Helper `0.0.32` serial regressions passed Because Recollection, MakeMePulse, Landon Norris, Shopify Editions Winter 2026, and blind Three.js WebGL animation keyframes with zero replay remote requests, blocking errors, and action failures.'
+      - '`pnpm verify` passed 355 tests; `pnpm test:e2e` passed 10 scenarios; `pnpm package:release` generated the 0.0.32 artifacts and the installed Helper SHA-256 matches `76d6980506baf574abd58e1a6d3804830c077a85505a6347d4867a4ad9007dbe`.'
     human_gate: false
-  - id: AI-S0-004
-    phase: S0
+  - id: BUG-006
+    phase: regression_hardening
     status: done
-    title: Create task queue
-    depends_on:
-      - AI-S0-003
+    title: Fix bounded resource-graph truncation and missing runtime modules on large static sites
+    objective: Replace first-come resource truncation with a bounded, runtime-critical dependency closure that keeps large authorized static mirrors runnable without source-domain special cases.
+    scope:
+      - apps/extension
+      - apps/helper
+      - packages/capture
+      - packages/mirror
+      - packages/validation
+      - fixtures
+      - tests
+      - scripts
+      - docs/ai
+    acceptance:
+      - Shopify Editions Winter 2026 opens from the installed extension without blocking local script failures.
+      - Resource limits preserve entry-runtime scripts, module dependencies, workers, styles, fonts, and directly rendered media before optional navigation pages or redundant responsive variants.
+      - Mirrors report an explicit capability boundary when a bounded capture cannot retain the complete reachable resource graph.
+      - The fix is generic and does not branch on Shopify or any source domain.
+      - Because Recollection, MakeMePulse, and Landon Norris retain their verified later interaction behavior.
+    verify:
+      - targeted unit and fixture regression tests
+      - source-versus-mirror browser diagnostics for Shopify Editions Winter 2026
+      - pnpm typecheck
+      - pnpm lint
+      - relevant Playwright end-to-end tests
+      - pnpm verify
+      - installed extension and Native Host real-site regression
+    evidence:
+      - '`packages/mirror/src/engine.test.ts` covers runtime-closure priority, bounded navigation capture, resource and byte capability boundaries, and preservation of runtime assets before optional media.'
+      - 'Targeted BUG-006 mirror, discovery, rewrite, and capture regressions passed 114/114 tests.'
+      - 'Installed Helper `0.0.23` with Native Messaging protocol 2 passed the Shopify Editions Winter 2026 regression at `.codex-runtime/real-site-regressions/www-shopify-com-1784692400777/result.json`: 1,493 downloaded resources, 7 failed resources, 0 skipped resources, 500,933,583 downloaded bytes, 0 local replay failures, 0 remote requests, 0 blocking errors, and all 8 scroll actions reached `47,583.2 / 48,303px`.'
+      - 'The Shopify mirror reported the 1,500-resource capability boundary without falsely reporting the 512 MiB byte boundary; at least 19 reachable resources were omitted after runtime-critical closure selection.'
+      - 'The installed Helper `0.0.23` MakeMePulse regression at `.codex-runtime/real-site-regressions/2019-makemepulse-com-1784693805244/result.json` passed entry, Start, drag, and Next with 0 local replay failures and 0 remote requests.'
+      - 'The installed Helper `0.0.23` Landon Norris serial regression at `.codex-runtime/real-site-regressions/landonorris-com-1784694371821/result.json` passed menu, On Track, and scroll interactions with 0 local replay failures, 0 remote requests, and 0 blocking errors.'
+      - 'The installed Helper `0.0.23` Because Recollection regression at `.codex-runtime/real-site-regressions/www-because-recollection-com-1784693805195/result.json` completed 589/589 resources and passed both later artist-route transitions with 0 local replay failures, 0 remote requests, and 0 blocking errors.'
+      - 'A three-process stress run exposed local CDP 3-second command saturation; the supported one-job regression was rerun serially and passed, and `docs/ai/COMMANDS.md` now requires serial real-site execution.'
+      - '`pnpm verify` passed formatting, lint, type checks, 304 tests, and all workspace builds.'
+      - '`pnpm test:e2e` passed 8/8 scenarios, including the installed Native Host one-click path.'
+      - '`pnpm package:release` generated the 0.0.23 extension ZIP, Windows Native Host ZIP, SPDX SBOM, and release manifest; the installed Helper SHA-256 is `932b430d54b661877eb0d3bd417f85bdf5f4738dea83ee065077fb645dafaf79`.'
     human_gate: false
-  - id: AI-S0-005
-    phase: S0
+  - id: BUG-005
+    phase: regression_hardening
     status: done
-    title: Establish commands and quality gates
-    depends_on:
-      - AI-S0-004
+    title: Fix replay stalls after introductory animation on deferred interactive sites
+    objective: Identify and correct the generic capture or replay defect that prevents later interactive states from loading in newly mirrored sites.
+    scope:
+      - apps/extension
+      - packages/capture
+      - packages/mirror
+      - packages/validation
+      - scripts
+      - tests
+      - docs/ai
+    acceptance:
+      - The Because Recollection mirror progresses beyond its introductory animation through normal browser interaction.
+      - The fix addresses a reusable capture, discovery, localization, or replay behavior rather than a source-domain special case.
+      - Deferred runtime resources required after initial load are available without unexpected remote requests or local failures.
+      - Existing real-site benchmarks and repository quality gates continue to pass.
+    verify:
+      - targeted unit and fixture regression tests
+      - real-site source versus mirror browser diagnostics
+      - pnpm typecheck
+      - pnpm lint
+      - relevant Playwright end-to-end tests
+      - pnpm verify
+    evidence:
+      - Installed Helper 0.0.19 mirrored Because Recollection at 589/589 resources and score 99; later artist routes passed without local failures, remote requests, console errors, or page errors
+      - Two held-click transitions reached later artist routes with no local failures, remote requests, console errors, or page errors
+      - Generic deferred JavaScript and JSON discovery/localization regression fixtures
+      - MakeMePulse and Landon Norris installed-extension regressions passed through later interaction states
+      - '`pnpm verify` passed with 301 tests and `pnpm test:e2e` passed 8 scenarios'
+      - Chrome and Edge Registry32/Registry64 diagnostics plus protocol-2 handshakes passed for installed 0.0.19
+      - Release package, SBOM, and manifest generated for 0.0.19
     human_gate: false
-  - id: AI-S0-006
-    phase: S0
+  - id: BUG-004
+    phase: bugfix
     status: done
-    title: Initialize monorepo packages
-    depends_on:
-      - AI-S0-005
+    title: Make Open folder launch a visible Windows File Explorer window
+    objective: Fix the installed extension action so users can open a completed mirror output directory from the popup.
+    scope:
+      - apps/helper
+      - tests/e2e
+      - docs/ai
+    acceptance:
+      - Open folder launches Explorer visibly for an existing mirror directory.
+      - Missing output directories return an actionable error.
+      - Helper tests, repository verification, installed Native Host diagnostics, and the popup action path pass.
+    verify:
+      - targeted helper tests
+      - pnpm verify
+      - installed Native Host action smoke test
+    evidence:
+      - visible Explorer process-launch regression test
+      - installed 0.0.9 Native Host diagnostics
+      - visible-window smoke test against an existing Landon Norris mirror
     human_gate: false
-  - id: AI-S0-007
-    phase: S0
+  - id: BUG-003
+    phase: regression_hardening
     status: done
-    title: Configure TypeScript linting and tests
-    depends_on:
-      - AI-S0-006
+    title: Restore actual-user one-click replay for reported static and WebGL sites
+    objective: Verify and correct the full extension-to-Native-Host capture and offline replay path for the reported sites, including required later interaction states.
+    scope:
+      - apps/extension
+      - apps/helper
+      - packages/capture
+      - packages/mirror
+      - packages/validation
+      - packaging/windows
+      - scripts
+      - docs/ai
+    acceptance:
+      - The installed current extension and Native Host version are unambiguous and self-diagnose correctly.
+      - Landon Norris, MakeMePulse, Messenger, Igloo, and Species in Pieces have no blocking offline replay errors or unexpected remote requests.
+      - Required reachable interaction states are exercised through normal browser input and retain their runtime assets offline.
+      - Full repository verification, relevant real-site evidence, and release packaging pass.
+    verify:
+      - pnpm verify
+      - pnpm test:e2e
+      - pnpm package:release
+      - real extension and Native Host regression evidence for each reported site
+    evidence:
+      - installed 0.0.8 Native Host diagnostics for Chrome and Edge
+      - local replay screenshots, request records, and validation reports for all five reported sites
+      - pnpm verify, pnpm test:e2e, and pnpm package:release
     human_gate: false
-  - id: AI-S0-008
-    phase: S0
+  - id: BUG-001
+    phase: bugfix
     status: done
-    title: Establish repository health check
-    depends_on:
-      - AI-S0-007
+    title: Fix cross-origin static body reuse and WebGL validation false positives
     human_gate: false
-  - id: AI-S0-009
-    phase: S0
+  - id: BUG-002
+    phase: bugfix
     status: done
-    title: Create fixture server
-    depends_on:
-      - AI-S0-008
+    title: Release version 0.0.2 and fix JavaScript-embedded CSS plus document-relative runtime assets
     human_gate: false
-  - id: AI-S0-010
-    phase: S0
+  - id: RC-001
+    phase: foundation
     status: done
-    title: Create ADR risk and metrics templates
-    depends_on:
-      - AI-S0-009
+    title: Establish monorepo, quality gates, fixtures, and architecture records
     human_gate: false
-  - id: AI-S1-001
-    phase: S1
-    status: in_progress
-    title: Create minimum MV3 capture controller
-    depends_on:
-      - AI-S0-010
+  - id: RC-002
+    phase: capture
+    status: done
+    title: Implement MV3 CDP capture with targets, workers, redirects, failures, and bounded idle completion
     human_gate: false
-  - id: AI-S1-002
-    phase: S1
-    status: pending
-    title: Attach debugger to the active tab
-    depends_on:
-      - AI-S1-001
+  - id: RC-003
+    phase: native_host
+    status: done
+    title: Implement Native Messaging v2 with handshake, progress, cancellation, recovery, and actions
     human_gate: false
-  - id: AI-S1-003
-    phase: S1
-    status: pending
-    title: Record Page domain events
-    depends_on:
-      - AI-S1-002
+  - id: RC-004
+    phase: mirror
+    status: done
+    title: Implement safe concurrent downloads, retries, decoding, hashing, discovery, and localization
     human_gate: false
-  - id: AI-S1-004
-    phase: S1
-    status: pending
-    title: Record Network domain events
-    depends_on:
-      - AI-S1-002
+  - id: RC-005
+    phase: replay
+    status: done
+    title: Implement loopback preview, security headers, ZIP export, and validation reports
     human_gate: false
-  - id: AI-S1-005
-    phase: S1
-    status: pending
-    title: Handle redirects failures and cache hits
-    depends_on:
-      - AI-S1-004
+  - id: RC-006
+    phase: privacy_security
+    status: done
+    title: Add SSRF/path defenses, tracking filters, form disabling, and persisted-data redaction
     human_gate: false
-  - id: AI-S1-006
-    phase: S1
-    status: pending
-    title: Implement the local helper runtime
-    depends_on:
-      - AI-S1-001
+  - id: RC-007
+    phase: packaging
+    status: done
+    title: Build Windows SEA helper with bundled Playwright runtime and Chromium Headless Shell
     human_gate: false
-  - id: AI-S1-007
-    phase: S1
-    status: pending
-    title: Connect Native Messaging
-    depends_on:
-      - AI-S1-006
+  - id: RC-008
+    phase: packaging
+    status: done
+    title: Add install, upgrade, diagnose, uninstall, SBOM, release ZIP, and hash manifest flows
     human_gate: false
-  - id: AI-S1-008
-    phase: S1
-    status: pending
-    title: Send capture manifests to the helper
-    depends_on:
-      - AI-S1-004
-      - AI-S1-007
+  - id: RC-009
+    phase: verification
+    status: done
+    title: Pass unit, helper E2E, extension capture E2E, and installed Native Host E2E suites
     human_gate: false
-  - id: AI-S1-009
-    phase: S1
-    status: pending
-    title: Download public static resources
-    depends_on:
-      - AI-S1-008
+  - id: RC-010
+    phase: documentation
+    status: done
+    title: Document authorized use, privacy behavior, installation, and store release handoff
     human_gate: false
-  - id: AI-S1-010
-    phase: S1
-    status: pending
-    title: Start the local preview server
-    depends_on:
-      - AI-S1-006
+  - id: EXT-001
+    phase: external_release
+    status: blocked
+    title: Sign and timestamp webmirror-helper.exe, refresh hashes, and rebuild release ZIPs
+    human_gate: true
+  - id: EXT-002
+    phase: external_release
+    status: blocked
+    title: Publish privacy policy and support contact at stable public URLs
+    human_gate: true
+  - id: EXT-003
+    phase: external_release
+    status: blocked
+    title: Upload approved packages and listing assets to Chrome Web Store and Microsoft Edge Add-ons
+    human_gate: true
+  - id: BETA-001
+    phase: beta
+    status: blocked
+    title: Execute the 20-page, Windows 10/11, Chrome, and Edge compatibility matrix
     human_gate: false
-  - id: AI-S1-011
-    phase: S1
-    status: pending
-    title: Replay the basic fixture offline
-    depends_on:
-      - AI-S1-009
-      - AI-S1-010
+  - id: NEXT-001
+    phase: optimization
+    status: done
+    title: Add response-body and CacheStorage fallback
     human_gate: false
-  - id: AI-S1-012
-    phase: S1
-    status: pending
-    title: Replay the WebGL benchmark first scene
-    depends_on:
-      - AI-S1-011
+  - id: NEXT-002
+    phase: optimization
+    status: done
+    title: Add content-addressed caching and HTTP cache revalidation
+    human_gate: false
+  - id: NEXT-003
+    phase: validation
+    status: done
+    title: Add perceptual comparison and scripted interaction validation
     human_gate: false

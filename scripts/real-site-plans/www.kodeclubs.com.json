@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 30000,
+  "loopbackSettleMs": 25000,
+  "actionSettleMs": 3000,
+  "actions": [
+    {
+      "id": "enter-club",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 495
+      },
+      "settleMs": 15000,
+      "expectSelector": "button.dialog__choice:visible"
+    },
+    {
+      "id": "advance-intro",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 655
+      },
+      "settleMs": 3000,
+      "expectSelector": "button.dialog__choice:visible"
+    }
+  ]
+}

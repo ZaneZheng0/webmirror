@@ -29,9 +29,9 @@ const transitions: Readonly<Record<JobState, readonly JobState[]>> = {
   fast_validating: ['ready', 'partial', 'cancelling', 'failed'],
   ready: ['deep_validating', 'complete', 'partial', 'cancelling', 'failed'],
   deep_validating: ['complete', 'partial', 'cancelling', 'failed'],
-  complete: [],
-  partial: [],
-  cancelling: ['cancelled', 'failed'],
+  complete: ['downloading', 'fast_validating'],
+  partial: ['downloading', 'fast_validating'],
+  cancelling: ['complete', 'partial', 'cancelled', 'failed'],
   cancelled: [],
   failed: [],
 };

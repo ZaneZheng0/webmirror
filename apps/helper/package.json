@@ -1,17 +1,24 @@
 {
   "name": "@webmirror/helper",
-  "version": "0.0.1",
+  "version": "0.0.60",
   "private": true,
   "type": "module",
   "bin": {
-    "webmirror-helper": "./dist/index.js"
+    "webmirror-helper": "./dist/index.cjs"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --platform node",
+    "build": "tsup",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@webmirror/shared": "workspace:*"
+    "@webmirror/mirror": "workspace:*",
+    "@webmirror/shared": "workspace:*",
+    "@webmirror/validation": "workspace:*",
+    "archiver": "^8.0.0",
+    "playwright": "^1.61.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^8.0.0"
   }
 }

@@ -302,7 +302,7 @@ Beta 默认不支持本机、内网或 VPN 页面。即使用户已授权内网�
 5. 任务根目录由 Helper 创建并持有，不从页面或 Native 消息接收任意绝对路径。用户选择的输出根只在可信 UI 流程中设置，并拒绝 Windows、Program Files、浏览器配置、仓库和其他高风险系统目录。
 6. 创建和写入前检查现有父目录不存在 Reparse Point。关键写入使用不跟随链接的文件打开策略；不支持可靠 no-follow 的路径必须采用受控新目录、最小 ACL 和写前/写后真实路径复核。
 7. 下载写入同目录随机临时文件，完成大小和 SHA-256 校验后原子改名。临时文件永不进入 `COMPLETE` 清单。
-8. 内容寻址缓存对象不可变。复用前重新验证 Hash；镜像不得通过可写 Hard Link 指向缓存对象，使用复制、只读链接或受保护的只读对象。
+8. 内容寻址缓存对象不可变。复用前重新验证 Hash；镜像不得通过可写 Hard Link 指向缓存对象，使用复制、只读链接或受保护的只读对象。索引只保存 URL 指纹和受限 validator；浏览器响应体、敏感查询 URL、重定向结果、`private`/`no-store`、`Set-Cookie` 和不支持的 `Vary` 不进入持久缓存，validator 不随重定向转发。
 9. Preview Server 使用同一安全路径解析器，禁止目录列表，拒绝未知任务、绝对路径、编码穿越和范围外文件。
 10. 任务取消、磁盘不足或 Helper 崩溃时将目录标记为中断，不能作为成功结果打开或导出。
 
@@ -386,8 +386,8 @@ MVP 只创建 ZIP，不导入或解压第三方 ZIP。任何未来的镜像导�
 4. `mirror.json` 中的“原 URL”解释为可追踪的脱敏 URL，不得违反 FR-014。资源本地映射使用内部资源 ID，不依赖持久化原始 Token。
 5. 不读取或导出 LocalStorage、SessionStorage、IndexedDB、浏览器密码、浏览历史、Cookie Store 或扩展存储中的页面凭据。
 6. 不序列化实时表单状态。所有 `input`、`textarea`、`select` 和 contenteditable 的用户值在 DOM 兜底快照中清空；密码和隐藏 Token 字段一律清空。
-7. 不重放带凭据的资源请求。Beta 优先对公开资源执行无 Cookie、无 Authorization 的重新获取；只有无需凭据仍可获得的资源才能进入普通镜像。
-8. 需要会话才能获得的资源标记为不支持或安全失败，不把浏览器 Cookie 写入 Helper。未来认证内容模式必须单独设计加密、保留期、用户确认和导出限制。
+7. 不重放带凭据的资源请求。Beta 优先对公开资源执行无 Cookie、无 Authorization 的重新获取。同 Origin、浏览器已经实际收到的静态 GET 响应体可以在不传递凭据的前提下分块传给 Helper，但仍必须通过 DNS/私网地址策略、大小限制、Hash 校验和 Secret Scan。
+8. 跨 Origin 凭据绑定资源、认证 API 和写请求标记为不支持或安全失败，不把浏览器 Cookie 写入 Helper。未来更广泛的认证内容模式必须单独设计加密、保留期、用户确认和导出限制。
 9. 对 HTML、JSON、JavaScript、Source Map 和配置文件执行高置信度 Secret Scan。检测到私钥、Bearer/JWT、云密钥或会话凭据时阻止 `COMPLETE` 和 ZIP，返回安全错误并隔离任务。
 10. 截图和页面正文可能天然包含用户可见敏感信息。产品必须在开始前提示输出包含页面内容，并将目录 ACL 限制为当前用户；诊断包默认不包含截图和正文。
 11. 默认不上传任何页面内容、URL、截图、日志或任务数据。未来遥测必须独立 Opt-in，并继续禁止 D0/D1 数据。
@@ -414,6 +414,12 @@ MVP 只创建 ZIP，不导入或解压第三方 ZIP。任何未来的镜像导�
 - Helper 误用 `eval`、动态 `import`、`require`、Shell 或系统文件关联执行下载内容。
 - 报告生成器把不可信错误、标题或 URL 当作 HTML。
 - 恶意脚本在 Playwright 验证中无限循环、创建进程或消耗 GPU。
+- 恶意动作配方通过脚本字段、选择器、按键或拖拽参数诱导 Helper
+  执行任意代码、修改表单值或触发数据外传。
+- 交互后出现的 HTTP、WebSocket、弹窗、下载或 Service Worker 绕过
+  首屏离线检查。
+- 畸形、超大或维度异常的参考 PNG 消耗内存，或利用逐像素严格比较制造
+  大量 WebGL/GPU 误报。
 - 损坏或被替换的缓存对象传播到多个任务。
 
 #### 控制
@@ -426,9 +432,35 @@ MVP 只创建 ZIP，不导入或解压第三方 ZIP。任何未来的镜像导�
 6. 用户点击“打开镜像”只能打开受控 HTTP 入口，不能自动调用来源资源的 Windows 文件关联。
 7. HTML 报告使用自动转义模板和严格 CSP；不可信值只作为文本或 JSON 编码数据。
 8. Playwright 运行在浏览器 Sandbox 和临时 Profile 中，设置导航、动作、页面、Context 和总进程超时。超时后终止整个验证进程树。
-9. CAS 对象以 SHA-256 命名，写入和复用时验证 Hash。Hash 或长度不匹配时隔离并重新下载，不能静默使用。
-10. 可选调用 Windows Defender 或企业杀毒作为附加信号，但不能把杀毒扫描作为唯一安全边界。
-11. 源站归档、磁盘镜像和安装包资源不自动解压或执行。
+9. 动作配方只接受有界、字段白名单化的 `click`、`scroll`、`key` 和
+   `drag` 联合类型；拒绝额外字段、重复 ID、脚本字符串和无效坐标。动作值
+   只能进入 Playwright 原生输入 API，不能拼接到 `evaluate`、`eval` 或脚本源。
+10. 深度动作在独立的临时 Context 中顺序执行，禁用 Service Worker 和下载，
+    关闭额外页面；按键聚焦到 input、textarea、select 或 contenteditable 时
+    fail closed，避免生成和持久化表单值。
+11. 每个本地回放 Context 使用仅监听 `127.0.0.1` 的流式代理，代理只转发
+    当前 Preview 端点，拒绝其他 HTTP 请求、重定向目标、CONNECT 和 Upgrade；
+    Playwright 路由作为第一层阻断。页面和 Frame 在导航前禁用 WebRTC/STUN 和
+    WebTransport 构造器；Worker 即使仍暴露构造器，也受代理、QUIC 禁用和浏览器
+    网络策略约束。阻断事件写入动作证据和远程依赖报告。
+12. URL Origin、路径、查询、Console/Page Error、网络错误、自定义 Method 和
+    异常 MIME 只保存固定类别或进程键控指纹。四类诊断事件分别有数量上限并共享
+    总字节预算；截断至少产生 `PARTIAL`，已识别的阻断错误被截断时仍保持
+    `FAILED`。
+13. Canvas 检查限制 Frame 和 Surface 证据数量，超限记录 omitted 计数并禁止
+    `COMPLETE`。页面脚本执行前记录 closed Shadow Root 创建，并以 CDP 事件辅助
+    检测；一旦存在无法完整遍历的 closed Shadow DOM，Canvas 证据标记 truncated，
+    不允许因漏检空白 Canvas 得到 `COMPLETE`。
+14. 截图对可见 input、textarea、select 和 contenteditable 使用固定颜色遮罩。
+    如果 closed Shadow DOM 使完整遮罩无法证明，则不持久化实际截图、参考图或
+    Diff 图，不以改变 Shadow Root mode 的方式破坏原页面语义。
+15. 参考图由可信调用方以 PNG 字节提供，不接受任意文件路径；单图、总字节数和
+    解码像素数有硬上限。解码前验证完整 IHDR 并拒绝无法设置解压输出上限的
+    交错 PNG；比较阶段在解码、Pixel Diff 和编码之间检查取消信号。尺寸不一致
+    或图片损坏作为显式证据，不执行图片内容。
+16. CAS 对象以 SHA-256 命名，写入和复用时验证 Hash。Hash 或长度不匹配时隔离并重新下载，不能静默使用。
+17. 可选调用 Windows Defender 或企业杀毒作为附加信号，但不能把杀毒扫描作为唯一安全边界。
+18. 源站归档、磁盘镜像和安装包资源不自动解压或执行。
 
 ### 9.10 安装、注册与更新
 
@@ -581,21 +613,31 @@ SSRF 测试应记录目标哨兵的连接计数，而不仅断言返回错误，
 | SEC-PREV-010 | 前一任务注册 Service Worker 后关闭并启动新任务             | 新任务 Origin 不受旧 Worker 控制                    |
 | SEC-PREV-011 | 验证页面无限循环、内存增长或反复弹窗                       | 超时后整个 Context/进程树被终止                     |
 | SEC-PREV-012 | 镜像尝试获取扩展 Origin、Native Host 或结果页 opener       | 无可用桥接或可信窗口引用                            |
+| SEC-PREV-013 | 动作配方包含脚本类型、额外字段、重复 ID 或越界坐标         | 配方在浏览器启动前被拒绝，不执行页面提供的代码      |
+| SEC-PREV-014 | Click/Key/Drag 后发起其他 Origin HTTP 或 WebSocket         | 远端哨兵连接数为 0，阻断事件进入动作和依赖报告      |
+| SEC-PREV-015 | Key 动作聚焦 input、textarea、select 或 contenteditable    | 动作失败且不产生或持久化表单值                      |
+| SEC-PREV-016 | 参考 PNG 损坏、超限、尺寸不一致或像素存在轻微 GPU 差异     | 有界解析；错误或容差结果明确，不产生严格像素误判    |
+| SEC-PREV-017 | 本地 302、Worker Fetch、WebSocket、WebTransport 尝试外连   | 远端 HTTP/TCP 哨兵连接数为 0，阻断证据已记录        |
+| SEC-PREV-018 | 页面洪泛 HTTP、Console、Page Error 和远程依赖事件          | JSON/HTML 大小有界，记录 dropped，结果不是 COMPLETE |
+| SEC-PREV-019 | 页面创建数百 Canvas 或大量 Frame                           | 证据条目有界，记录 omitted，结果不是 COMPLETE       |
+| SEC-PREV-020 | 空白 Canvas 位于 closed Shadow Root                        | Canvas 标记 truncated，结果不是 COMPLETE            |
 
 ### 11.6 隐私与日志
 
-| 测试 ID      | 场景                                                              | 通过条件                                     |
-| ------------ | ----------------------------------------------------------------- | -------------------------------------------- |
-| SEC-PRIV-001 | Cookie、Authorization、Set-Cookie 和自定义 Token Header           | 全部输出和日志扫描无 Canary                  |
-| SEC-PRIV-002 | JWT/OAuth/AWS 签名查询参数                                        | 持久化 URL 已脱敏，原值不落盘                |
-| SEC-PRIV-003 | 密码、文本、隐藏 CSRF、textarea、select、contenteditable          | DOM 兜底输出无用户值                         |
-| SEC-PRIV-004 | LocalStorage、SessionStorage、IndexedDB 和 Cookie Store 含 Canary | 不读取、不导出                               |
-| SEC-PRIV-005 | 资源只能携带 Cookie 才能下载                                      | 标记不支持，不保存 Cookie，不错误 `COMPLETE` |
-| SEC-PRIV-006 | 响应体含私钥/Bearer/JWT Canary                                    | 阻止完成和 ZIP，任务被隔离                   |
-| SEC-PRIV-007 | 日志值含 CRLF、ANSI、超长值和 Token                               | 单行结构有效、值已截断脱敏                   |
-| SEC-PRIV-008 | 生成诊断包和 ZIP 后递归扫描                                       | Cookie、Token、密码和表单 Canary 数量为 0    |
-| SEC-PRIV-009 | 崩溃和取消路径                                                    | 临时目录、stderr、错误报告中无 Canary        |
-| SEC-PRIV-010 | 遥测关闭状态运行完整任务                                          | 无任何 WebMirror 云端请求                    |
+| 测试 ID      | 场景                                                              | 通过条件                                                       |
+| ------------ | ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| SEC-PRIV-001 | Cookie、Authorization、Set-Cookie 和自定义 Token Header           | 全部输出和日志扫描无 Canary                                    |
+| SEC-PRIV-002 | JWT/OAuth/AWS 签名查询参数                                        | 持久化 URL 已脱敏，原值不落盘                                  |
+| SEC-PRIV-003 | 密码、文本、隐藏 CSRF、textarea、select、contenteditable          | DOM 兜底输出无用户值                                           |
+| SEC-PRIV-004 | LocalStorage、SessionStorage、IndexedDB 和 Cookie Store 含 Canary | 不读取、不导出                                                 |
+| SEC-PRIV-005 | 同源静态资源只能携带 Cookie 才能下载                              | 仅复用来源绑定且 Hash 校验的浏览器响应体；Cookie 不进入 Helper |
+| SEC-PRIV-006 | 响应体含私钥/Bearer/JWT Canary                                    | 阻止完成和 ZIP，任务被隔离                                     |
+| SEC-PRIV-007 | 日志值含 CRLF、ANSI、超长值和 Token                               | 单行结构有效、值已截断脱敏                                     |
+| SEC-PRIV-008 | 生成诊断包和 ZIP 后递归扫描                                       | Cookie、Token、密码和表单 Canary 数量为 0                      |
+| SEC-PRIV-009 | 崩溃和取消路径                                                    | 临时目录、stderr、错误报告中无 Canary                          |
+| SEC-PRIV-010 | 遥测关闭状态运行完整任务                                          | 无任何 WebMirror 云端请求                                      |
+| SEC-PRIV-011 | 表单值进入 URL Path、Origin、Method、Console 或 Page Error        | `validation.json`、报告中仅有指纹，Canary 数量为 0             |
+| SEC-PRIV-012 | 可见表单值位于 closed Shadow Root                                 | 不持久化实际/参考/Diff PNG，JSON/报告无 Canary                 |
 
 ### 11.7 恶意资源、安装与更新
 
@@ -695,7 +737,7 @@ SSRF 测试应记录目标哨兵的连接计数，而不仅断言返回错误，
 
 | ADR 主题             | 默认推荐                                                            |
 | -------------------- | ------------------------------------------------------------------- |
-| 认证资源策略         | Beta 只保存无需 Cookie/Authorization 可获取的公开资源               |
+| 认证资源策略         | 默认重取公开资源；仅允许来源绑定的同源静态浏览器响应体，不传递凭据  |
 | SSRF 与 DNS 策略     | 全部地址解析、每跳重验、连接 IP 固定、默认无代理                    |
 | Preview/Control 隔离 | Preview 只读；控制优先 Native Messaging，必要 HTTP 控制面独立强认证 |
 | 任务 Origin          | 每任务唯一随机 Host/端口，任务 ID 永不复用                          |

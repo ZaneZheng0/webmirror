@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 15000,
+  "loopbackSettleMs": 20000,
+  "actionSettleMs": 4000,
+  "actions": [
+    {
+      "id": "scroll-section-1",
+      "type": "scroll",
+      "deltaY": 1600,
+      "expectScrollYAtLeast": 900
+    },
+    {
+      "id": "scroll-section-2",
+      "type": "scroll",
+      "deltaY": 3200,
+      "expectScrollYAtLeast": 3000
+    },
+    {
+      "id": "scroll-section-3",
+      "type": "scroll",
+      "deltaY": 4800,
+      "expectScrollYAtLeast": 6500
+    },
+    {
+      "id": "scroll-section-4",
+      "type": "scroll",
+      "deltaY": 7200,
+      "expectScrollYAtLeast": 11000
+    },
+    {
+      "id": "scroll-section-5",
+      "type": "scroll",
+      "deltaY": 8000,
+      "expectScrollYAtLeast": 24000
+    },
+    {
+      "id": "scroll-section-6",
+      "type": "scroll",
+      "deltaY": 8000,
+      "expectScrollYAtLeast": 32000
+    },
+    {
+      "id": "scroll-section-7",
+      "type": "scroll",
+      "deltaY": 8000,
+      "expectScrollYAtLeast": 40000
+    },
+    {
+      "id": "scroll-section-8",
+      "type": "scroll",
+      "deltaY": 8000,
+      "expectScrollYAtLeast": 47000
+    }
+  ]
+}

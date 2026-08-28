@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #101820;
+  color: #f6f8fb;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  display: grid;
+  gap: 16px;
+  min-height: 100vh;
+  place-content: center;
+  padding: 24px;
+}
+
+.cssom-surface {
+  width: 96px;
+  height: 96px;
+  background-size: cover;
+}

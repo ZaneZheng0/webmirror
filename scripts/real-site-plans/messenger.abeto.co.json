@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 12000,
+  "loopbackSettleMs": 15000,
+  "actionSettleMs": 1200,
+  "actions": [
+    {
+      "id": "begin",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 620
+      },
+      "settleMs": 7000
+    },
+    {
+      "id": "advance-dialogue-01",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-02",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-03",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-04",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-05",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-06",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-07",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-08",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-09",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-10",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-11",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-12",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-13",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-14",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-15",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      }
+    },
+    {
+      "id": "advance-dialogue-16",
+      "type": "click",
+      "point": {
+        "x": 977,
+        "y": 638
+      },
+      "settleMs": 2500
+    },
+    {
+      "id": "walk-right",
+      "type": "key",
+      "key": "d",
+      "holdMs": 2500,
+      "settleMs": 1500
+    }
+  ]
+}

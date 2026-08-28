@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "loopbackSettleMs": 15000,
+  "actionSettleMs": 1500,
+  "actions": [
+    {
+      "id": "open-navigation",
+      "type": "click",
+      "selector": "[data-nav-ham]",
+      "expectSelector": "[data-nav-m]"
+    },
+    {
+      "id": "open-on-track",
+      "type": "click",
+      "selector": "[data-nav-m] a[href=\"/on-track\"], [data-nav-m] a[href=\"on-track.html\"]",
+      "settleMs": 4000,
+      "expectSelector": "[data-page=\"on-track\"]",
+      "expectUrlIncludes": "on-track"
+    },
+    {
+      "id": "scroll-on-track",
+      "type": "scroll",
+      "deltaY": 1000,
+      "settleMs": 2500,
+      "expectScrollYAtLeast": 1000
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 node_modules/
 dist/
 coverage/
+playwright-report/
+test-results/
 .cache/
+.codex-runtime/
 .turbo/
 .vite/
 *.log
@@ -20,4 +23,3 @@ tmp/
 
 apps/extension/.output/
 apps/helper/bin/
-

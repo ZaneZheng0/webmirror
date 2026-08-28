@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "WebMirror",
   "description": "Create an authorized offline mirror of the active static web page.",
-  "version": "0.0.1",
+  "version": "0.0.60",
+  "minimum_chrome_version": "125",
   "action": {
     "default_popup": "popup.html"
   },

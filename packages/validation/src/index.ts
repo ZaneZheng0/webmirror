@@ -1,5 +1,37 @@
-export interface ValidationResult {
-  status: 'complete' | 'partial' | 'failed';
-  errors: string[];
-  warnings: string[];
-}
+export { runValidation, isLoopbackHostname } from './runner.js';
+export { renderValidationReport } from './report.js';
+export {
+  validationSchemaVersion,
+  type ValidationAction,
+  type ValidationActionResult,
+  type ValidationActionStatus,
+  type RunValidationOptions,
+  type ValidationCanvasContext,
+  type ValidationCanvasDetail,
+  type ValidationCanvasOutcome,
+  type ValidationCanvasResult,
+  type ValidationCheckpointResult,
+  type ValidationClickAction,
+  type ValidationConsoleError,
+  type ValidationDiagnosticCategory,
+  type ValidationDiagnosticCategoryResult,
+  type ValidationDiagnosticsResult,
+  type ValidationDragAction,
+  type ValidationEntryResult,
+  type ValidationHttpFailure,
+  type ValidationInteractionResult,
+  type ValidationKeyAction,
+  type ValidationPageError,
+  type ValidationPerceptualComparison,
+  type ValidationPerceptualOptions,
+  type ValidationPerceptualOutcome,
+  type ValidationPerceptualResult,
+  type ValidationPerceptualSettings,
+  type ValidationPoint,
+  type ValidationRemoteDependency,
+  type ValidationResult,
+  type ValidationScrollAction,
+  type ValidationScreenshotResult,
+  type ValidationStatus,
+  type ValidationViewport,
+} from './types.js';

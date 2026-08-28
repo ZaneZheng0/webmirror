@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 20000,
+  "loopbackSettleMs": 25000,
+  "actionSettleMs": 5000,
+  "actions": [
+    {
+      "id": "hold-home-scene",
+      "type": "wait",
+      "durationMs": 5000,
+      "expectSelector": "canvas"
+    }
+  ]
+}

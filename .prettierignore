@@ -1,7 +1,7 @@
 node_modules/
 dist/
 coverage/
+.codex-runtime/
 artifacts/
 mirror-output/
 pnpm-lock.yaml
-

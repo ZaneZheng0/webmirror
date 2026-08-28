@@ -6,9 +6,12 @@ export default tseslint.config(
     ignores: [
       '**/dist/**',
       '**/coverage/**',
+      '.codex-runtime/**',
       '**/node_modules/**',
       '**/artifacts/**',
       '**/mirror-output/**',
+      '**/playwright-report/**',
+      '**/test-results/**',
     ],
   },
   js.configs.recommended,
@@ -32,6 +35,35 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         document: 'readonly',
+        fetch: 'readonly',
+        HTMLCanvasElement: 'readonly',
+        Image: 'readonly',
+        self: 'readonly',
+        Worker: 'readonly',
+      },
+    },
+  },
+  {
+    files: ['packaging/windows/**/*.cjs'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        module: 'readonly',
+        process: 'readonly',
+        require: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: {
+        console: 'readonly',
+        crypto: 'readonly',
+        process: 'readonly',
       },
     },
   },

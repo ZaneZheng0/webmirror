@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "loopbackSettleMs": 15000,
+  "actionSettleMs": 3000,
+  "actions": [
+    {
+      "id": "enter-landing",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 650
+      },
+      "settleMs": 5000,
+      "expectSelector": ".subtitles.visible"
+    },
+    {
+      "id": "reveal-start",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 335
+      },
+      "settleMs": 5000,
+      "expectSelector": ".landing__button:not(.is-hidden)"
+    },
+    {
+      "id": "start-first-scene",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 650
+      },
+      "settleMs": 6000,
+      "expectSelector": "body:not(.body-landing)"
+    },
+    {
+      "id": "drag-first-scene",
+      "type": "drag",
+      "from": {
+        "x": 640,
+        "y": 650
+      },
+      "to": {
+        "x": 640,
+        "y": 100
+      },
+      "steps": 40,
+      "settleMs": 7000,
+      "expectSelector": ".next-btn:not(.is-hidden)"
+    },
+    {
+      "id": "next-first-scene",
+      "type": "click",
+      "selector": ".next-btn:not(.is-hidden)",
+      "settleMs": 15000,
+      "expectSelector": ".next-btn.is-hidden"
+    }
+  ]
+}

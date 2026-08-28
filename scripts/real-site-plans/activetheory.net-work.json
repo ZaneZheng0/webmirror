@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1
+  },
+  "sourceSettleMs": 15000,
+  "loopbackSettleMs": 25000,
+  "actionSettleMs": 4000,
+  "actions": [
+    {
+      "id": "open-work-detail",
+      "type": "click",
+      "point": {
+        "x": 640,
+        "y": 420
+      },
+      "settleMs": 8000,
+      "expectUrlIncludes": "/work/"
+    }
+  ]
+}

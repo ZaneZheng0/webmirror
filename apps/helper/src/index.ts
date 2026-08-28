@@ -1,22 +1,15 @@
-import { protocolVersion } from '@webmirror/shared';
+import { runHelperCli } from './cli.js';
 
-const packageVersion = '0.0.1';
-
-function writeDiagnostic(message: string): void {
-  process.stderr.write(`[webmirror-helper] ${message}\n`);
-}
-
-function main(): void {
-  const command = process.argv[2];
-
-  if (command === '--version') {
-    process.stdout.write(`${packageVersion}\n`);
-    return;
-  }
-
-  writeDiagnostic(
-    `Helper scaffold started. Version ${packageVersion}, protocol ${protocolVersion}. Native Messaging is not connected yet.`,
-  );
-}
-
-main();
+void runHelperCli(process.argv.slice(2), {
+  input: process.stdin,
+  output: process.stdout,
+  errorOutput: process.stderr,
+})
+  .then((exitCode) => {
+    process.exitCode = exitCode;
+  })
+  .catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : 'Unknown helper failure.';
+    process.stderr.write(`[webmirror-helper] ${message}\n`);
+    process.exitCode = 1;
+  });
