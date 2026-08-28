@@ -2,6 +2,8 @@
   "name": "webmirror",
   "version": "0.0.60",
   "private": true,
+  "description": "Authorized static web page capture and offline replay for Chrome and Microsoft Edge.",
+  "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@11.3.0",
   "engines": {
